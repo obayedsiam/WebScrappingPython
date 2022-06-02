@@ -25,29 +25,35 @@
 
 
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import pandas as pd
 
-driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+driver.get("https://www.rokomari.com/book/226821/ebar-bhinno-kichu-hok?ref=fl2_p4")
 
-products = []  # List to store name of the product
-review = []  # List to store price of the product
-# ratings = []  # List to store rating of the product
-
-driver.get("<a href=https://www.flipkart.com/laptops/")
-
-driver.get("<a href=https://www.rokomari.com/book/226821/ebar-bhinno-kichu-hok?ref=fl2_p4")
-
+# products = []  # List to store name of the product
+# review = []  # List to store price of the product
+# # ratings = []  # List to store rating of the product
+#
+# # driver.get("<a href=https://www.flipkart.com/laptops/")
+#
+# driver.get("<a href=https://www.rokomari.com/book/226821/ebar-bhinno-kichu-hok?ref=fl2_p4")
+#
 content = driver.page_source
-soup = BeautifulSoup(content)
-for a in soup.findAll('a', href=True, attrs={'class': '_31qSD5'}):
-    name = a.find('div', attrs={'class': 'review-content'})
-# name = a.find('div', attrs={'class': '_1vC4OE _2rQ-NK'})
-# rating = a.find('div', attrs={'class': 'hGSR34 _2beYZw'})
-products.append(name.text)
-# prices.append(price.text)
-# ratings.append(rating.text)
+soup = BeautifulSoup(content, features="html.parser")
+# for a in soup.findAll('a', href=True, attrs={'class': '_31qSD5'}):
+reviewList = soup.find_all('p', attrs={'class': 'review-text js--review-content'})
 
-df = pd.DataFrame({'Reviwer Name': products})
-# df = pd.DataFrame({'Reviwer Name': products, 'Price': prices, 'Rating': ratings})
-df.to_csv('products.csv', index=False, encoding='utf-8')
+for a in reviewList:
+    print(a.text)
+    print("\n")
+# # name = a.find('div', attrs={'class': '_1vC4OE _2rQ-NK'})
+# # rating = a.find('div', attrs={'class': 'hGSR34 _2beYZw'})
+# products.append(name.text)
+
+
+# df = pd.DataFrame({'Reviwer Name': products})
+# # df = pd.DataFrame({'Reviwer Name': products, 'Price': prices, 'Rating': ratings})
+# df.to_csv('products.csv', index=False, encoding='utf-8')
