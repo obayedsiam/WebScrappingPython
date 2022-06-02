@@ -23,52 +23,31 @@
 #
 # # See PyCharm help at https://www.jetbrains.com/help/pycharm/
 
-#
+
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import pandas as pd
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
 
-driver = webdriver.Chrome(ChromeDriverManager().install())
-# driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
-#
-# products = []  # List to store name of the product
-# review = []  # List to store price of the product
-# # ratings = []  # List to store rating of the product
-#
-# driver.get("<a href=https://www.flipkart.com/laptops/")
-#
-# driver.get("<a href=https://www.rokomari.com/book/226821/ebar-bhinno-kichu-hok?ref=fl2_p4")
-#
-# content = driver.page_source
-# soup = BeautifulSoup(content)
-# # for a in soup.findAll('a', href=True, attrs={'class': 'review-content'}):
-# name = soup.find('p', attrs={'class': 'review-text js--review-content'})
-# # name = a.find('div', attrs={'class': '_1vC4OE _2rQ-NK'})
-# # rating = a.find('div', attrs={'class': 'hGSR34 _2beYZw'})
-# products.append(name.text)
-# # prices.append(price.text)
-# # ratings.append(rating.text)
-#
-# print(name)
-# df = pd.DataFrame({'Reviewer Name': products})
-# # df = pd.DataFrame({'Reviewr Name': products, 'Price': prices, 'Rating': ratings})
-# df.to_csv('products.csv', index=False, encoding='utf-8')
+driver = webdriver.Chrome("/usr/lib/chromium-browser/chromedriver")
 
-import requests
-from bs4 import BeautifulSoup
-from selenium.webdriver import Chrome
+products = []  # List to store name of the product
+review = []  # List to store price of the product
+# ratings = []  # List to store rating of the product
 
-driver = Chrome(executable_path='/path/to/driver')
-driver.get('https://oxylabs.io/blog')
-blog_titles = driver.get_elements_by_css_selector(' h2.blog-card__content-title')
-for title in blog_tiles:
-    print(title.text)
-driver.quit()  # closing the browser
+driver.get("<a href=https://www.flipkart.com/laptops/")
 
-# url = 'https://www.rokomari.com/book/226821/ebar-bhinno-kichu-hok?ref=fl2_p4'
-# response = requests.get(url)
-# soup = BeautifulSoup(response.text, 'html.parser')
-# for review in soup.find('meta', attrs={'name': 'description'}):
-#     print(review)
+driver.get("<a href=https://www.rokomari.com/book/226821/ebar-bhinno-kichu-hok?ref=fl2_p4")
+
+content = driver.page_source
+soup = BeautifulSoup(content)
+for a in soup.findAll('a', href=True, attrs={'class': '_31qSD5'}):
+    name = a.find('div', attrs={'class': 'review-content'})
+# name = a.find('div', attrs={'class': '_1vC4OE _2rQ-NK'})
+# rating = a.find('div', attrs={'class': 'hGSR34 _2beYZw'})
+products.append(name.text)
+# prices.append(price.text)
+# ratings.append(rating.text)
+
+df = pd.DataFrame({'Reviwer Name': products})
+# df = pd.DataFrame({'Reviwer Name': products, 'Price': prices, 'Rating': ratings})
+df.to_csv('products.csv', index=False, encoding='utf-8')
