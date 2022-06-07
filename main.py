@@ -24,43 +24,56 @@ soup = BeautifulSoup(content, features="html.parser")
 
 # Finding all the review lists
 reviewList = soup.find_all('p', attrs={'class': 'review-text js--review-content'})
+dateOfReviewList = soup.find_all('p', attrs={'class': 'date d-inline-block'})
 
 # Loop to get all information from single review of all the reviews
 for singleReview in reviewList:
+    allReviewList.append(singleReview.text)
+    print(singleReview.text)
+    # nameOfTheReviewer = driver.find_element_by_xpath("//p[@class='d-inline-block name']/span").get_attribute('innerHTML')
+    # allReviewerName.append(nameOfTheReviewer.text)
+    # print(nameOfTheReviewer)
     nameOfTheBook = driver.find_element_by_xpath("//div[@class='details-book-main-info__header']/h1").get_attribute(
         'innerHTML')
 
-nameOfTheBookWriter = driver.find_element_by_xpath(
-    "//p[@class='details-book-info__content-author']").get_attribute('innerHTML')
+    print(nameOfTheBook)
 
-for link in soup.find_all('a', attrs={'class': 'review-text js--review-content'}):
-    name = link.append(link.get('href'))
 
-nameOfTheReviewer = driver.find_element_by_xpath("//p[@class='d-inline-block name']").get_attribute(
-    'innerHTML')
-dateOfReview = soup.find('p', attrs={'class': 'date d-inline-block'})
 
-allBookName.append(nameOfTheBook)
-allReviewList.append(singleReview.text)
-allReviewerName.append(nameOfTheReviewer)
-allReviewDate.append(dateOfReview.text)
-allBookWriterName.append(nameOfTheBookWriter)
 
-df = pd.DataFrame({'Book Name': allBookName,
-                   'Book Writer': allBookWriterName,
-                   'Reviewer Name': allReviewerName,
-                   'Review Date': allReviewDate,
-                   'Review': allReviewList
-                   })
+
+
+# nameOfTheBookWriter = driver.find_element_by_xpath(
+#     "//p[@class='details-book-info__content-author']").get_attribute('innerHTML')
+#
+# for link in soup.find_all('a', attrs={'class': 'review-text js--review-content'}):
+#     name = link.append(link.get('href'))
+#
+
+
+# allBookName.append(nameOfTheBook)
+
+
+
+# allBookWriterName.append(nameOfTheBookWriter)
+
+a = {'Reviewer Name': allReviewerName, 'Review Date': allReviewDate, 'Review': allReviewList}
+df = pd.DataFrame.from_dict(a, orient='index')
+df = df.transpose()
+
+# 'Book Name': allBookName,
+#                    'Book Writer': allBookWriterName,
+#                    'Reviewer Name': allReviewerName,
+
 df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\products.xlsx', index=True, encoding='utf-8')
 
-print(singleReview.text)
-print(nameOfTheReviewer)
-print(dateOfReview.text)
-print(name)
-print(nameOfTheBook)
-print(nameOfTheBookWriter)
-print("\n")
+# print(nameOfTheReviewer)
+# print("\n")
+
+# print(name)
+# print(nameOfTheBook)
+# print(nameOfTheBookWriter)
+
 
 # bookName = soup.find_all('div', attrs={'class': 'details-book-main-info__header'})
 # This is a sample Python script.
