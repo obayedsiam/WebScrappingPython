@@ -22,26 +22,66 @@ driver.get("https://www.rokomari.com/book/226821/ebar-bhinno-kichu-hok?ref=fl2_p
 content = driver.page_source
 soup = BeautifulSoup(content, features="html.parser")
 
-# Finding all the review lists
+# Finding all the lists
 reviewList = soup.find_all('p', attrs={'class': 'review-text js--review-content'})
 dateOfReviewList = soup.find_all('p', attrs={'class': 'date d-inline-block'})
+nameOfTheReviewer = soup.find_all('p', attrs={'class': 'd-inline-block name'})
 
-# Loop to get all information from single review of all the reviews
+Book = soup.find('div', attrs={'class': 'details-book-main-info__header'})
+Writer = soup.find('p', attrs={'class': 'details-book-info__content-author'})
+
+# Book Name
+print(Book.text)
+
+# Writer Name
+print(Writer.find('a').contents[0])
+
+# Review from List
 for singleReview in reviewList:
-    allReviewList.append(singleReview.text)
     print(singleReview.text)
-    # nameOfTheReviewer = driver.find_element_by_xpath("//p[@class='d-inline-block name']/span").get_attribute('innerHTML')
-    # allReviewerName.append(nameOfTheReviewer.text)
-    # print(nameOfTheReviewer)
-    nameOfTheBook = driver.find_element_by_xpath("//div[@class='details-book-main-info__header']/h1").get_attribute(
-        'innerHTML')
+    allReviewList.append(singleReview.text)
+    allBookName.append(Book.text)
+    allBookWriterName.append(Writer.find('a').contents[0])
 
-    print(nameOfTheBook)
+# Review Date from List
+for singleDate in dateOfReviewList:
+    if len(singleDate.text) > 0:
+        print(singleDate.text)
+        allReviewDate.append(singleDate.text)
 
+# Reviewer Name from List
+for p in nameOfTheReviewer:
+    k = p.text.replace("By ", "")
+    k = k.replace(", ", "")
+    if len(k) > 0:
+        print(k)
+        allReviewerName.append(k)
 
+# Array for header
+a = {'Book Name': allBookName,
+     'Writer Name': allBookWriterName,
+     'Reviewer Name': allReviewerName,
+     'Review Date': allReviewDate,
+     'Review': allReviewList}
 
+# Inserting into Excel File
+df = pd.DataFrame.from_dict(a, orient='index')
+df = df.transpose()
+# df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\products.xlsx', index=True, encoding='utf-8')
+df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\products.xlsx', index=True, encoding='utf-8')
 
-
+#########################################################################################################
+# allBookName.append(nameOfTheBook)
+# print(nameOfTheWriter)
+# print(nameOfTheBook)
+# nameOfTheBookWriter = driver.find_element_by_xpath(
+#     "//p[@class='details-book-info__content-author']").get_attribute('innerHTML')
+# print(singleReview.text)
+# nameOfTheReviewer = driver.find_element_by_xpath("//p[@class='d-inline-block name']/span").get_attribute('innerHTML')
+# allReviewerName.append(nameOfTheReviewer.text)
+# print(nameOfTheReviewer)
+# nameOfTheBook = driver.find_element_by_xpath("//div[@class='details-book-main-info__header']/h1").get_attribute(
+#     'innerHTML')
 
 # nameOfTheBookWriter = driver.find_element_by_xpath(
 #     "//p[@class='details-book-info__content-author']").get_attribute('innerHTML')
@@ -51,22 +91,7 @@ for singleReview in reviewList:
 #
 
 
-# allBookName.append(nameOfTheBook)
-
-
-
 # allBookWriterName.append(nameOfTheBookWriter)
-
-a = {'Reviewer Name': allReviewerName, 'Review Date': allReviewDate, 'Review': allReviewList}
-df = pd.DataFrame.from_dict(a, orient='index')
-df = df.transpose()
-
-# 'Book Name': allBookName,
-#                    'Book Writer': allBookWriterName,
-#                    'Reviewer Name': allReviewerName,
-
-df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\products.xlsx', index=True, encoding='utf-8')
-
 # print(nameOfTheReviewer)
 # print("\n")
 
