@@ -13,6 +13,7 @@ driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 # All Store variables
 allReviewList = []  # Array of reviews
 allReviewerName = []  # Array of Reviewers' Name
+allRatingList = []  # Array of Ratings
 allReviewDate = []  # Array of review Date
 allBookName = []  # Array of reviewed book name
 allBookWriterName = []  # Array of book writers' name
@@ -23,14 +24,15 @@ a = {'Book Name': allBookName,
      'Writer Name': allBookWriterName,
      'Reviewer Name': allReviewerName,
      'Review Date': allReviewDate,
+     'Rating': allRatingList,
      'Review': allReviewList}
 
-linkUrlFile = openpyxl.load_workbook('C:\\Users\\EATL\\PycharmProjects\\WebScapping\\link.xlsx', data_only=True)
+linkUrlFile = openpyxl.load_workbook('H:\Programming\pyCharm\WebScrappingPython\link.xlsx', data_only=True)
 sheet_obj = linkUrlFile.active
 m_row = sheet_obj.max_row
 print(m_row)
 
-for i in range(1, 3):
+for i in range(1, 5):
     cell_obj = sheet_obj.cell(row=i, column=2)
     linkAddress = cell_obj.value
     print(linkAddress)
@@ -43,7 +45,7 @@ for i in range(1, 3):
     reviewList = soup.find_all('p', attrs={'class': 'review-text js--review-content'})
     dateOfReviewList = soup.find_all('p', attrs={'class': 'date d-inline-block'})
     nameOfTheReviewer = soup.find_all('p', attrs={'class': 'd-inline-block name'})
-
+    ratingList = soup.find_all('div', attrs={'class': 'stars mr-2'})
     Book = soup.find('div', attrs={'class': 'details-book-main-info__header'})
     Writer = soup.find('p', attrs={'class': 'details-book-info__content-author'})
 
@@ -59,6 +61,14 @@ for i in range(1, 3):
         allReviewList.append(singleReview.text)
         allBookName.append(Book.text)
         allBookWriterName.append(Writer.find('a').contents[0])
+
+    # Review from List
+    for singleRating in ratingList:
+        count = len(singleRating.find_all(recursive=False))
+        print(count)
+        allRatingList.append(count)
+
+    allRatingList.pop(0)
 
     # Review Date from List
     for singleDate in dateOfReviewList:
@@ -77,8 +87,8 @@ for i in range(1, 3):
     # Inserting into Excel File
     df = pd.DataFrame.from_dict(a, orient='index')
     df = df.transpose()
-    df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\products.xlsx', index=True, encoding='utf-8')
-    # df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\products.xlsx', index=True, encoding='utf-8')
+    #  df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\products.xlsx', index=True, encoding='utf-8')
+    df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\products.xlsx', index=True, encoding='utf-8')
 
 #########################################################################################################
 # allBookName.append(nameOfTheBook)
