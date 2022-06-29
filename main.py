@@ -17,78 +17,135 @@ allRatingList = []  # Array of Ratings
 allReviewDate = []  # Array of review Date
 allBookName = []  # Array of reviewed book name
 allBookWriterName = []  # Array of book writers' name
+allBookCategory = []  # Array of book category name
 allBookUrlLink = []  # Array of URL Link
+basicUrl = "https://www.rokomari.com"
 
-# Array for header
-a = {'Book Name': allBookName,
-     'Writer Name': allBookWriterName,
-     'Reviewer Name': allReviewerName,
-     'Review Date': allReviewDate,
-     'Rating': allRatingList,
-     'Review': allReviewList}
+# # Array for header
+# a = {'Book Name': allBookName,
+#      'Writer Name': allBookWriterName,
+#      'Category': allBookCategory,
+#      'Reviewer Name': allReviewerName,
+#      'Review Date': allReviewDate,
+#      'Rating': allRatingList,
+#      'Review': allReviewList}
+#
+# # linkUrlFile = openpyxl.load_workbook('H:\Programming\pyCharm\WebScrappingPython\link.xlsx', data_only=True)
+# linkUrlFile = openpyxl.load_workbook(r'C:\Users\EATL\PycharmProjects\WebScapping\link.xlsx', data_only=True)
+# sheet_obj = linkUrlFile.active
+# m_row = sheet_obj.max_row
+# print(m_row)
+#
+# for i in range(1, 5):
+#     cell_obj = sheet_obj.cell(row=i, column=2)
+#     linkAddress = cell_obj.value
+#     print(linkAddress)
+#     # Getting http page from the url
+#     driver.get(linkAddress)
+#     content = driver.page_source
+#     soup = BeautifulSoup(content, features="html.parser")
+#
+#     # Finding all the lists
+#     reviewList = soup.find_all('p', attrs={'class': 'review-text js--review-content'})
+#     dateOfReviewList = soup.find_all('p', attrs={'class': 'date d-inline-block'})
+#     nameOfTheReviewer = soup.find_all('p', attrs={'class': 'd-inline-block name'})
+#     ratingList = soup.find_all('div', attrs={'class': 'stars mr-2'})
+#     Book = soup.find('div', attrs={'class': 'details-book-main-info__header'})
+#     Writer = soup.find('p', attrs={'class': 'details-book-info__content-author'})
+#     Category = soup.find('div', attrs={'class': 'details-book-info__content-category d-flex align-items-center'})
+#
+#     # Book Name
+#     print(Book.text)
+#
+#     # Writer Name
+#     print(Writer.find('a').contents[0])
+#
+#     # Category Name
+#     print(Category.find('a').contents[0])
+#
+#     # Review from List
+#     for singleReview in reviewList:
+#         print(singleReview.text)
+#         allReviewList.append(singleReview.text)
+#         allBookName.append(Book.text)
+#         allBookWriterName.append(Writer.find('a').contents[0])
+#         allBookCategory.append(Category.find('a').contents[0])
+#
+#     # Review from List
+#     for singleRating in ratingList:
+#         count = len(singleRating.find_all(recursive=False))
+#         print(count)
+#         allRatingList.append(count)
+#
+#     allRatingList.pop(0)
+#
+#     # Review Date from List
+#     for singleDate in dateOfReviewList:
+#         if len(singleDate.text) > 0:
+#             print(singleDate.text)
+#             allReviewDate.append(singleDate.text)
+#
+#     # Reviewer Name from List
+#     for p in nameOfTheReviewer:
+#         k = p.text.replace("By ", "")
+#         k = k.replace(", ", "")
+#         if len(k) > 0:
+#             print(k)
+#             allReviewerName.append(k)
+#
+#     # Inserting into Excel File
+#     df = pd.DataFrame.from_dict(a, orient='index')
+#     df = df.transpose()
+#     df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\products.xlsx', index=True, encoding='utf-8')
+#     # df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\products.xlsx', index=True, encoding='utf-8')
 
-linkUrlFile = openpyxl.load_workbook('H:\Programming\pyCharm\WebScrappingPython\link.xlsx', data_only=True)
-sheet_obj = linkUrlFile.active
-m_row = sheet_obj.max_row
-print(m_row)
+# Collecting writers name
 
-for i in range(1, 5):
-    cell_obj = sheet_obj.cell(row=i, column=2)
-    linkAddress = cell_obj.value
-    print(linkAddress)
-    # Getting http page from the url
-    driver.get(linkAddress)
+writerWiseBookLinkList = []
+b = {'Writers Book Link': writerWiseBookLinkList}
+authorListPage = "https://www.rokomari.com/book/authors?ref=mm&page=2"
+isNextPresent = True
+
+while isNextPresent:
+    driver.get(authorListPage)
     content = driver.page_source
     soup = BeautifulSoup(content, features="html.parser")
+    LinkListUI = soup.find('ul', attrs={'class': 'list-inline list-unstyled authorList'})
+    thisPageWriterCount = len(LinkListUI.find_all(recursive=False))
+    listLI = LinkListUI.find_all(recursive=False)
+    print(thisPageWriterCount)
 
-    # Finding all the lists
-    reviewList = soup.find_all('p', attrs={'class': 'review-text js--review-content'})
-    dateOfReviewList = soup.find_all('p', attrs={'class': 'date d-inline-block'})
-    nameOfTheReviewer = soup.find_all('p', attrs={'class': 'd-inline-block name'})
-    ratingList = soup.find_all('div', attrs={'class': 'stars mr-2'})
-    Book = soup.find('div', attrs={'class': 'details-book-main-info__header'})
-    Writer = soup.find('p', attrs={'class': 'details-book-info__content-author'})
+    for listTemp in listLI:
+        aTag = listTemp.find('a')
+        href = aTag.get('href')
+        print(href)
+        writerWiseBookLinkList.append(basicUrl+href)
 
-    # Book Name
-    print(Book.text)
+    next_link = soup.find('a', text='next')
+    next_link2 = soup.find('div', attrs={'class': 'pagination'})
+    next_link3 = next_link2.find_all(recursive=False)
 
-    # Writer Name
-    print(Writer.find('a').contents[0])
+    for nn in next_link3:
+        lll = nn.find('a')
+        if lll is not None:
+            hh = lll.get('href')
+         #  nextURL = next_link.get('href')
+            print("Printing next URL : ")
+            print(hh)
 
-    # Review from List
-    for singleReview in reviewList:
-        print(singleReview.text)
-        allReviewList.append(singleReview.text)
-        allBookName.append(Book.text)
-        allBookWriterName.append(Writer.find('a').contents[0])
+    if next_link is None:
+        isNextPresent = False
 
-    # Review from List
-    for singleRating in ratingList:
-        count = len(singleRating.find_all(recursive=False))
-        print(count)
-        allRatingList.append(count)
 
-    allRatingList.pop(0)
 
-    # Review Date from List
-    for singleDate in dateOfReviewList:
-        if len(singleDate.text) > 0:
-            print(singleDate.text)
-            allReviewDate.append(singleDate.text)
 
-    # Reviewer Name from List
-    for p in nameOfTheReviewer:
-        k = p.text.replace("By ", "")
-        k = k.replace(", ", "")
-        if len(k) > 0:
-            print(k)
-            allReviewerName.append(k)
 
-    # Inserting into Excel File
-    df = pd.DataFrame.from_dict(a, orient='index')
-    df = df.transpose()
-    #  df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\products.xlsx', index=True, encoding='utf-8')
-    df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\products.xlsx', index=True, encoding='utf-8')
+
+
+# Inserting into Excel File
+df = pd.DataFrame.from_dict(b, orient='index')
+df = df.transpose()
+df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriter.xlsx', index=True, encoding='utf-8')
 
 #########################################################################################################
 # allBookName.append(nameOfTheBook)
