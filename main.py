@@ -1,4 +1,5 @@
 import openpyxl
+import requests
 import selenium
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
@@ -113,28 +114,36 @@ while isNextPresent:
     LinkListUI = soup.find('ul', attrs={'class': 'list-inline list-unstyled authorList'})
     thisPageWriterCount = len(LinkListUI.find_all(recursive=False))
     listLI = LinkListUI.find_all(recursive=False)
-    print(thisPageWriterCount)
+    # print(thisPageWriterCount)
 
     for listTemp in listLI:
         aTag = listTemp.find('a')
         href = aTag.get('href')
-        print(href)
+        # print(href)
         writerWiseBookLinkList.append(basicUrl+href)
 
     next_link = soup.find('a', text='next')
     next_link2 = soup.find('div', attrs={'class': 'pagination'})
     next_link3 = next_link2.find_all(recursive=False)
 
-    for nn in next_link3:
-        lll = nn.find('a')
-        if lll is not None:
-            hh = lll.get('href')
-         #  nextURL = next_link.get('href')
-            print("Printing next URL : ")
-            print(hh)
+    links_with_text = [a['href'] for a in soup.find_all('a', href=True) if a.text]
+    # for nn in next_link3:
+        # lll = nn.find('a', text)
+        # if lll is not None:
+        #     hh = lll.get('href')
+        #  #  nextURL = next_link.get('href')
+        #     print("Printing next URL : ")
+        # print(nn)
 
-    if next_link is None:
-        isNextPresent = False
+    # # print(links_with_text)
+    # if next_link is None:
+    #     isNextPresent = False
+
+    response = requests.get(authorListPage)
+    soup2 = BeautifulSoup(response.text, "lxml")
+    next_page_element = soup.select_one('a.next > a')
+    print(next_page_element)
+
 
 
 
