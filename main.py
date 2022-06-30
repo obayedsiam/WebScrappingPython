@@ -2,6 +2,7 @@ import openpyxl
 import requests
 import selenium
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -104,9 +105,9 @@ basicUrl = "https://www.rokomari.com"
 
 writerWiseBookLinkList = []
 b = {'Writers Book Link': writerWiseBookLinkList}
-authorListPage = "https://www.rokomari.com/book/authors?ref=mm&page=2"
-isNextPresent = True
+authorListPage = "https://www.rokomari.com/book/authors?ref=mm&page=1"
 
+isNextPresent = True
 while isNextPresent:
     driver.get(authorListPage)
     content = driver.page_source
@@ -114,47 +115,25 @@ while isNextPresent:
     LinkListUI = soup.find('ul', attrs={'class': 'list-inline list-unstyled authorList'})
     thisPageWriterCount = len(LinkListUI.find_all(recursive=False))
     listLI = LinkListUI.find_all(recursive=False)
-    # print(thisPageWriterCount)
-
+    print("####################")
     for listTemp in listLI:
         aTag = listTemp.find('a')
         href = aTag.get('href')
-        # print(href)
+        print(href)
         writerWiseBookLinkList.append(basicUrl+href)
-
-    next_link = soup.find('a', text='next')
-    next_link2 = soup.find('div', attrs={'class': 'pagination'})
-    next_link3 = next_link2.find_all(recursive=False)
-
-    links_with_text = [a['href'] for a in soup.find_all('a', href=True) if a.text]
-    # for nn in next_link3:
-        # lll = nn.find('a', text)
-        # if lll is not None:
-        #     hh = lll.get('href')
-        #  #  nextURL = next_link.get('href')
-        #     print("Printing next URL : ")
-        # print(nn)
-
-    # # print(links_with_text)
-    # if next_link is None:
-    #     isNextPresent = False
-
-    response = requests.get(authorListPage)
-    soup2 = BeautifulSoup(response.text, "lxml")
-    next_page_element = soup.select_one('a.next > a')
-    print(next_page_element)
-
-
-
-
-
-
-
+    try:
+       my_element = driver.find_element_by_xpath("//a[text()='next ']")
+       print(my_element.get_attribute('href'))
+       authorListPage = my_element.get_attribute('href')
+    except NoSuchElementException:
+       isNextPresent = False
+       print("Hello")
 
 # Inserting into Excel File
 df = pd.DataFrame.from_dict(b, orient='index')
 df = df.transpose()
-df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriter.xlsx', index=True, encoding='utf-8')
+# df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriter.xlsx', index=True, encoding='utf-8')
+df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\AllWriter.xlsx', index=True, encoding='utf-8')
 
 #########################################################################################################
 # allBookName.append(nameOfTheBook)
