@@ -18,20 +18,19 @@ def getBookUrlFromWriterUrl(options, driver):
     m_row = sheet_obj.max_row
     print(m_row)
 
-    for i in range(2, 4):
+    for i in range(2, m_row):
         cell_obj = sheet_obj.cell(row=i, column=2)
         linkAddress = cell_obj.value
         isNextPresent = True
-
         while isNextPresent:
+            print("Writer Url Link : ",(i-2))
             print(linkAddress)
             driver.get(linkAddress)
             content = driver.page_source
             soup = BeautifulSoup(content, features="html.parser")
-            content = driver.page_source
-            soup = BeautifulSoup(content, features="html.parser")
             LinkListDiv = soup.find_all('div', attrs={'class': 'book-list-wrapper'})
 
+            print("Book List from the Writer Url : ")
             for listTemp in LinkListDiv:
                 aTag = listTemp.find('a')
                 href = aTag.get('href')
@@ -39,11 +38,11 @@ def getBookUrlFromWriterUrl(options, driver):
                 booksLinkList.append(basicUrl+href)
                 try:
                    my_element = driver.find_element_by_xpath("//a[text()='next']")
-                   print(my_element.get_attribute('href'))
+                   # print(my_element.get_attribute('href'))
                    linkAddress = my_element.get_attribute('href')
                 except NoSuchElementException:
                    isNextPresent = False
-                   print("Hello")
+                   print("End of Writer Book List")
 
     # Inserting into Excel File
     df = pd.DataFrame.from_dict(c, orient='index')

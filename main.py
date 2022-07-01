@@ -15,8 +15,8 @@ options = selenium.webdriver.ChromeOptions()
 options.add_argument('--window-size=1920x1080')
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-GetWriterUrl.getWriterUrl(options, driver)
-# GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
+#GetWriterUrl.getWriterUrl(options, driver)
+GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
 # GetReviewFromBook.getReview(options, driver)
 
 
