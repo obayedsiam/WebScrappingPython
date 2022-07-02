@@ -6,6 +6,8 @@ from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import pandas as pd
+
+import CheckEmptyUrl
 import GetBookUrlFromWriter
 import GetReviewFromBook
 import GetWriterUrl
@@ -15,8 +17,9 @@ options = selenium.webdriver.ChromeOptions()
 options.add_argument('--window-size=1920x1080')
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-#GetWriterUrl.getWriterUrl(options, driver)
-GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
+# GetWriterUrl.getWriterUrl(options, driver)
+CheckEmptyUrl.check_empty_url(options, driver)
+# GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
 # GetReviewFromBook.getReview(options, driver)
 
 
