@@ -20,7 +20,7 @@ def check_empty_url(options, driver):
     m_row = sheet_obj.max_row
     print(m_row)
 
-    for i in range(9586, m_row):
+    for i in range(40048, m_row):
         cell_obj = sheet_obj.cell(row=i, column=2)
         linkAddress = cell_obj.value
         isNextPresent = True
