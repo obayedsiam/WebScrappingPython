@@ -18,8 +18,8 @@ options.add_argument('--window-size=1920x1080')
 driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
 # GetWriterUrl.getWriterUrl(options, driver)
-CheckEmptyUrl.check_empty_url(options, driver)
-# GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
+# CheckEmptyUrl.check_empty_url(options, driver)
+GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
 # GetReviewFromBook.getReview(options, driver)
 
 

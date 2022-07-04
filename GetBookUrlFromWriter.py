@@ -20,7 +20,7 @@ def getBookUrlFromWriterUrl(options, driver):
     m_row = sheet_obj.max_row
     print(m_row)
 
-    for i in range(2, m_row):
+    for i in range(16636, m_row):
         cell_obj = sheet_obj.cell(row=i, column=2)
         linkAddress = cell_obj.value
         isNextPresent = True
@@ -33,7 +33,7 @@ def getBookUrlFromWriterUrl(options, driver):
             LinkListDiv = soup.find_all('div', attrs={'class': 'book-list-wrapper'})
 
             print("Book List from the Writer Url : ")
-            print(LinkListDiv)
+            # print(LinkListDiv)
             if len(LinkListDiv) > 0:
                 # print("Entered into if cond")
                 for listTemp in LinkListDiv:
@@ -47,7 +47,7 @@ def getBookUrlFromWriterUrl(options, driver):
                         linkAddress = my_element.get_attribute('href')
                     except NoSuchElementException:
                         isNextPresent = False
-                        print("End of Writer Book List")
+                        # print("End of Writer Book List")
             else:
                 i = i + 1
                 cell_obj = sheet_obj.cell(row=i, column=2)
