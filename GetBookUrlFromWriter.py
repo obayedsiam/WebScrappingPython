@@ -14,13 +14,13 @@ def getBookUrlFromWriterUrl(options, driver):
     basicUrl = "https://www.rokomari.com"
     empltyBookUrl = 0
     c = {'Books Link': booksLinkList}
-    # linkUrlFile = openpyxl.load_workbook('H:\Programming\pyCharm\WebScrappingPython\AllWriterValidUrl_Part_1.xlsx', data_only=True)
-    linkUrlFile = openpyxl.load_workbook(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriterValidUrl_Part_1.xlsx', data_only=True)
+    linkUrlFile = openpyxl.load_workbook('H:\Programming\pyCharm\WebScrappingPython\AllWriterValidUrl_Part_1.xlsx', data_only=True)
+    #linkUrlFile = openpyxl.load_workbook(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriterValidUrl_Part_1.xlsx', data_only=True)
     sheet_obj = linkUrlFile.active
     m_row = sheet_obj.max_row
     print(m_row)
 
-    for i in range(18887, m_row):
+    for i in range(18912, m_row):
         cell_obj = sheet_obj.cell(row=i, column=2)
         linkAddress = cell_obj.value
         isNextPresent = True
@@ -58,5 +58,5 @@ def getBookUrlFromWriterUrl(options, driver):
         # Inserting into Excel File
         df = pd.DataFrame.from_dict(c, orient='index')
         df = df.transpose()
-        # df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\AllBook.xlsx', index=True, encoding='utf-8')
-        df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\AllBook.xlsx', index=True, encoding='utf-8')
+        df.to_excel(r'H:\Programming\pyCharm\WebScrappingPython\AllBook.xlsx', index=True, encoding='utf-8')
+        # df.to_excel(r'C:\Users\EATL\PycharmProjects\WebScapping\AllBook.xlsx', index=True, encoding='utf-8')
