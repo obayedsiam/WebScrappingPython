@@ -22,10 +22,11 @@ def check_empty_url(options, driver):
     basicUrl = "https://www.rokomari.com"
     emptyWriterUrl = 0
     d = {'Writer Valid Url': validUrlList}
-    #linkUrlFile = openpyxl.load_workbook(r'H:\Programming\pyCharm\WebScrappingPython\AllWriter.xlsx', data_only=True)
-    linkUrlFile = openpyxl.load_workbook(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriter.xlsx', data_only=True)
+    linkUrlFile = openpyxl.load_workbook(r'H:\Programming\pyCharm\WebScrappingPython\AllWriter.xlsx', data_only=True)
+    #linkUrlFile = openpyxl.load_workbook(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriter.xlsx', data_only=True)
     sheet_obj = linkUrlFile.active
     m_row = sheet_obj.max_row
+    m_row = 78977
     print(m_row)
 
     for i in range(writer_url_number, m_row):
@@ -45,8 +46,8 @@ def check_empty_url(options, driver):
         if len(LinkListDiv) > 0:
             # print("Entered into if cond")
             validUrlList.append(linkAddress)
-            #myFileName = r'H:\Programming\pyCharm\WebScrappingPython\AllWriterValidUrl.xlsx'
-            myFileName = r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriterValidUrl.xlsx'
+            myFileName = r'H:\Programming\pyCharm\WebScrappingPython\AllWriterValidUrl2.xlsx'
+            #myFileName = r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriterValidUrl2.xlsx'
 
             wb = load_workbook(filename=myFileName)
             ws = wb['Sheet1']

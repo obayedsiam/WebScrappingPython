@@ -6,6 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup as bs
 import CheckEmptyUrl
+import GetBookUrlFromWriter
 import pandas as pd
 
 options = selenium.webdriver.ChromeOptions()
@@ -45,8 +46,8 @@ def get_data(proxy_list, proxy_counter):
     options.add_argument('--proxy-server=%s' % proxy_list[proxy_counter])
     try:
         # GetWriterUrl.getWriterUrl(options, driver)
-        CheckEmptyUrl.check_empty_url(options, driver)
-        # GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
+        # CheckEmptyUrl.check_empty_url(options, driver)
+        GetBookUrlFromWriter.getBookUrlFromWriterUrl(options, driver)
         # GetReviewFromBook.getReview(options, driver)
     except:
         print("New ip needed")
