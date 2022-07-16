@@ -15,8 +15,8 @@ def getBookUrlFromWriterUrl(options, driver):
     basicUrl = "https://www.rokomari.com"
     empltyBookUrl = 0
     c = {'Books Link': booksLinkList}
-    linkUrlFile = openpyxl.load_workbook('H:\Programming\pyCharm\WebScrappingPython\AllWriterValidUrl_Part_1.xlsx',data_only=True)
-    # linkUrlFile = openpyxl.load_workbook(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriterValidUrl_Part_1.xlsx',data_only=True)
+    #linkUrlFile = openpyxl.load_workbook('H:\Programming\pyCharm\WebScrappingPython\AllWriterValidUrl_Part_1.xlsx',data_only=True)
+    linkUrlFile = openpyxl.load_workbook(r'C:\Users\EATL\PycharmProjects\WebScapping\AllWriterValidUrl_Part_1.xlsx',data_only=True)
     sheet_obj = linkUrlFile.active
     m_row = sheet_obj.max_row
     # print(m_row)
@@ -54,8 +54,8 @@ def getBookUrlFromWriterUrl(options, driver):
                     print(href)
                     booksLinkList.append(basicUrl+href)
                     url = basicUrl + href
-                    myFileName = r'H:\Programming\pyCharm\WebScrappingPython\BookList.xlsx'
-                    # myFileName = r'C:\Users\EATL\PycharmProjects\WebScapping\BookList.xlsx'
+                    #myFileName = r'H:\Programming\pyCharm\WebScrappingPython\BookList.xlsx'
+                    myFileName = r'C:\Users\EATL\PycharmProjects\WebScapping\BookList.xlsx'
                     try:
                         wb = load_workbook(filename=myFileName)
                     except:

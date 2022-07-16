@@ -51,7 +51,7 @@ def get_data(proxy_list, proxy_counter):
         # GetReviewFromBook.getReview(options, driver)
     except:
         print("New ip needed")
-        if proxy_counter == (len(proxy_list) - 1):
+        if (proxy_counter == (len(proxy_list) - 1)) or (proxy_counter == 30):
             print("Existing proxy list ended")
             proxy_list = get_free_proxies()
             get_data(proxy_list, 0)
